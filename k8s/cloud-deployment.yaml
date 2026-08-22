@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-service
+  template:
+    metadata:
+      labels:
+        app: cloud-service
+    spec:
+      containers:
+        - name: cloud-service
+          image: cloud-service:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 6000
+          envFrom:
+            - secretRef:
+                name: cloud-service-secret

@@ -1,3 +1,14 @@
 .env
+*.env
+
+# Kubernetes secrets
+k8s/cloud-secret.yaml
+
+# Python
 __pycache__/
 *.pyc
+.venv/
+venv/
+
+# Docker
+*.log

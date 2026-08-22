@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fog-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fog-gateway
+  template:
+    metadata:
+      labels:
+        app: fog-gateway
+    spec:
+      containers:
+        - name: fog-gateway
+          image: fog-gateway:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
