@@ -1,34 +1,55 @@
 from flask import Flask, request,jsonify
+import os
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
 
 app=Flask(__name__)
 
+load_dotenv()
+SMTP_EMAIL=os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD=os.getenv("SMTP_PASSWORD")
+ALERT_EMAIL=os.getenv("ALERT_EMAIL")
+
+prev_severity=None
+
+
 def send_email(alert):
-    print("\nEMAIL!!!!")
-    print("To: <insert email id>")
-    print(f"Subject: {alert["severity"]} Environmental alert")
-    print()
+    message=EmailMessage()
+    message["From"]=SMTP_EMAIL
+    message["To"]=ALERT_EMAIL
+    message["Subject"]=f"{alert["severity"]} Environmental Alert"
+    body=f"""
+Environmental Monitoring Alert
+Severity: {alert["severity"]}
+Time: {alert["timestamp"]}
+Detected conditions: 
+"""
     if (alert["alerts"]):
-        for msg in alert["alerts"]:
-            print(f" - {msg}")
+        for item in alert["alerts"]:
+            body+=f" - {item}\n"
     else:
-        print("No environmental issues")
-    print()
+        body+="None\n"
+    message.set_content(body)
+    with smtplib.SMTP("smtp.gmail.com",587)as smtp:
+        smtp.starttls()
+        smtp.login(SMTP_EMAIL,SMTP_PASSWORD)
+        smtp.send_message(message)
+
+    print("Email successfully sent")
+    
 
 
 
 def process_alert(alert):
+    global prev_severity
     severity=alert["severity"] 
-    if (severity.lower()=="normal"):
+    if (prev_severity!=severity):
         send_email(alert)
-        return "Normal email sent"
-    elif (severity.lower()=="warning"):
-        send_email(alert)
-        return "Warning email sent"
-    elif (severity.lower()=="critical"):
-        send_email(alert)
-        return "Critical email sent"
+        prev_severity=severity
+        return f"{severity} email sent"
+    return f"{severity} unchanged. No email sent."
 
-    return "Unknown severity"
 
     
 
