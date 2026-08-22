@@ -52,10 +52,9 @@ def receive_sensor_data():
     }
     print(alert_payload)
     response=requests.post(
-        "http://localhost:6000/alerts",
+        "http://cloud-service:6000/alerts",
         json=alert_payload
     )
-
     return jsonify(alert_payload)
 
 if (__name__=="__main__"):

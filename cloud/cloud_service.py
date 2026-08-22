@@ -18,11 +18,11 @@ def send_email(alert):
     message=EmailMessage()
     message["From"]=SMTP_EMAIL
     message["To"]=ALERT_EMAIL
-    message["Subject"]=f"{alert["severity"]} Environmental Alert"
+    message["Subject"]=f"{alert['severity']} Environmental Alert"
     body=f"""
 Environmental Monitoring Alert
-Severity: {alert["severity"]}
-Time: {alert["timestamp"]}
+Severity: {alert['severity']}
+Time: {alert['timestamp']}
 Detected conditions: 
 """
     if (alert["alerts"]):
