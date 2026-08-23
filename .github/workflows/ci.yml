@@ -28,3 +28,16 @@ jobs:
           python -m py_compile fog/fog_gateway.py
           python -m py_compile cloud/cloud_service.py
           python -m py_compile simulator/simulator.py
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build fog gateway image
+        run: docker build -t fog-gateway:v1 ./fog
+
+      - name: Build cloud service image
+        run: docker build -t cloud-service:v1 ./cloud
