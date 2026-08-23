@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r fog/requirements.txt
+          pip install -r cloud/requirements.txt
+
+      - name: Verify Python files
+        run: |
+          python -m py_compile fog/fog_gateway.py
+          python -m py_compile cloud/cloud_service.py
+          python -m py_compile simulator/simulator.py
