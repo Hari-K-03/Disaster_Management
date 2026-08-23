@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: cloud-service
-          image: cloud-service:v1
-          imagePullPolicy: Never
+          image: hariprathyumnank/cloud-service:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 6000
           envFrom:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fog-gateway
-          image: fog-gateway:v1
-          imagePullPolicy: Never
+          image: hariprathyumnank/fog-gateway:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
